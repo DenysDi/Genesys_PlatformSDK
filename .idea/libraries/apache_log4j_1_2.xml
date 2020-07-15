@@ -1,0 +1,25 @@
+<component name="libraryTable">
+  <library name="apache-log4j-1.2">
+    <CLASSES>
+      <root url="file://$USER_HOME$/Desktop/Useful/apache-log4j-1.2.15" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="file://$USER_HOME$/Desktop/Useful/apache-log4j-1.2.15/site/apidocs" />
+    </JAVADOC>
+    <NATIVE>
+      <root url="file://$USER_HOME$/Desktop/Useful/apache-log4j-1.2.15" />
+    </NATIVE>
+    <SOURCES>
+      <root url="file://$USER_HOME$/Desktop/Useful/apache-log4j-1.2.15" />
+      <root url="file://$USER_HOME$/Desktop/Useful/apache-log4j-1.2.15/contribs/CekiGulcu" />
+      <root url="file://$USER_HOME$/Desktop/Useful/apache-log4j-1.2.15/contribs/Jamie Tsao" />
+      <root url="file://$USER_HOME$/Desktop/Useful/apache-log4j-1.2.15/contribs/JimMoore" />
+      <root url="file://$USER_HOME$/Desktop/Useful/apache-log4j-1.2.15/contribs/ThomasFenner" />
+      <root url="file://$USER_HOME$/Desktop/Useful/apache-log4j-1.2.15/src/main/java" />
+      <root url="file://$USER_HOME$/Desktop/Useful/apache-log4j-1.2.15/src/main/javadoc" />
+      <root url="file://$USER_HOME$/Desktop/Useful/apache-log4j-1.2.15/src/performance/java" />
+      <root url="file://$USER_HOME$/Desktop/Useful/apache-log4j-1.2.15/tests/src/java" />
+    </SOURCES>
+    <jarDirectory url="file://$USER_HOME$/Desktop/Useful/apache-log4j-1.2.15" recursive="false" />
+  </library>
+</component>
