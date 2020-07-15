@@ -1,9 +1,6 @@
 package Protocols;
 
-import com.genesyslab.platform.commons.PsdkCustomization;
 import com.genesyslab.platform.commons.collections.KeyValueCollection;
-import com.genesyslab.platform.commons.log.Log;
-import com.genesyslab.platform.commons.log.Log4JLoggerFactoryImpl;
 import com.genesyslab.platform.commons.protocol.*;
 import com.genesyslab.platform.openmedia.protocol.InteractionServerProtocol;
 import com.genesyslab.platform.openmedia.protocol.InteractionServerProtocolListener;
@@ -12,7 +9,6 @@ import com.genesyslab.platform.openmedia.protocol.interactionserver.events.Event
 import com.genesyslab.platform.openmedia.protocol.interactionserver.events.EventSnapshotInteractions;
 import com.genesyslab.platform.openmedia.protocol.interactionserver.requests.RequestRegisterClient;
 import com.genesyslab.platform.openmedia.protocol.interactionserver.requests.agentmanagement.RequestStartPlaceAgentStateReportingAll;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -31,36 +27,32 @@ public class ReqRegCli {
             ixn.setClientType(InteractionClient.ReportingEngine);
 
         final InteractionServerProtocolListener server = new InteractionServerProtocolListener(endpoint);
-            server.setClientRequestHandler(new ClientRequestHandler() {
-                public void processRequest(final RequestContext requestContext) {
-                    System.out.println("\n\n--->Server Context is: " + requestContext + "<---\n\n");
-                    Message msg = requestContext.getRequestMessage();
-                    Message response = null;
-                    Object refId = null;
-                    if (msg instanceof Referenceable) {
-                        refId = ((Referenceable) msg).retreiveReference();
+            server.setClientRequestHandler(requestContext -> {
+                System.out.println("\n\n--->Server Context is: " + requestContext + "<---\n\n");
+                Message msg = requestContext.getRequestMessage();
+                Message response = null;
+                Object refId = null;
+                if (msg instanceof Referenceable) {
+                    refId = ((Referenceable) msg).retreiveReference();
+                }
+                if (msg != null) if (msg.messageId() == RequestRegisterClient.ID) {
+                    RequestRegisterClient request = (RequestRegisterClient) msg;
+                    EventAck event = EventAck.create();
+                    event.setProxyClientId(1);
+                    response = event;
+                } else if (msg.messageId() != EventSnapshotInteractions.ID) {
+                    // handle some request
+                    // ...
+                    // create response
+                }
+                if (response != null) {
+                    if (refId != null && response instanceof Referenceable) {
+                        ((Referenceable) response).updateReference(refId);
                     }
-                    if (msg != null) {
-                        if (msg.messageId() == RequestRegisterClient.ID) {
-                            RequestRegisterClient request = (RequestRegisterClient) msg;
-                            EventAck event = EventAck.create();
-                            event.setProxyClientId(1);
-                            response = event;
-                        } else if (msg.messageId() != EventSnapshotInteractions.ID) {
-                            // handle some request
-                            // ...
-                            // create response
-                        }
-                    }
-                    if (response != null) {
-                        if (refId != null && response instanceof Referenceable) {
-                            ((Referenceable) response).updateReference(refId);
-                        }
-                        try {
-                            requestContext.respond(response);
-                        } catch (final ProtocolException e) {
-                            e.printStackTrace();
-                        }
+                    try {
+                        requestContext.respond(response);
+                    } catch (final ProtocolException e) {
+                        e.printStackTrace();
                     }
                 }
             });

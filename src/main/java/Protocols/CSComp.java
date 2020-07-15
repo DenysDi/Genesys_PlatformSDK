@@ -1,18 +1,15 @@
 package Protocols;
 
-import com.genesyslab.platform.applicationblocks.com.ConfigException;
 import com.genesyslab.platform.commons.PsdkCustomization;
 import com.genesyslab.platform.commons.log.Log;
 import com.genesyslab.platform.commons.log.Log4JLoggerFactoryImpl;
 import com.genesyslab.platform.commons.protocol.Endpoint;
-import com.genesyslab.platform.commons.protocol.ProtocolException;
 import com.genesyslab.platform.configuration.protocol.ConfServerProtocol;
 import com.genesyslab.platform.configuration.protocol.types.CfgAppType;
-import com.genesyslab.platform.standby.exceptions.WSException;
 import org.apache.log4j.BasicConfigurator;
 
 public class CSComp {
-    public static void main (String [] args) throws ConfigException, WSException, InterruptedException, ProtocolException {
+    public static void main (String [] args) {
         PsdkCustomization.setOption(PsdkCustomization.PsdkOption.PsdkLoggerTraceMessages, null, "true");
         Log.setLoggerFactory(new Log4JLoggerFactoryImpl());
         BasicConfigurator.configure();
