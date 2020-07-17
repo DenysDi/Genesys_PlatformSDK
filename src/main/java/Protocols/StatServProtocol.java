@@ -2,13 +2,11 @@ package Protocols;
 
 import com.genesyslab.platform.commons.protocol.Endpoint;
 import com.genesyslab.platform.commons.protocol.Message;
-import com.genesyslab.platform.commons.protocol.ProtocolException;
 import com.genesyslab.platform.reporting.protocol.StatServerProtocol;
 import com.genesyslab.platform.reporting.protocol.statserver.*;
 import com.genesyslab.platform.reporting.protocol.statserver.requests.RequestGetStatisticEx;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;

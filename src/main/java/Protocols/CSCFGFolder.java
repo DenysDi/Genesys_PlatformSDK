@@ -5,9 +5,6 @@ import com.genesyslab.platform.applicationblocks.com.ConfigException;
 import com.genesyslab.platform.applicationblocks.com.ICfgObject;
 import com.genesyslab.platform.applicationblocks.com.IConfService;
 import com.genesyslab.platform.applicationblocks.com.queries.CfgApplicationQuery;
-import com.genesyslab.platform.commons.PsdkCustomization;
-import com.genesyslab.platform.commons.log.Log;
-import com.genesyslab.platform.commons.log.Log4JLoggerFactoryImpl;
 import com.genesyslab.platform.commons.protocol.Endpoint;
 import com.genesyslab.platform.commons.protocol.MessageHandler;
 import com.genesyslab.platform.configuration.protocol.ConfServerProtocol;
@@ -15,21 +12,15 @@ import com.genesyslab.platform.configuration.protocol.types.CfgAppType;
 import com.genesyslab.platform.configuration.protocol.types.CfgFlag;
 import com.genesyslab.platform.standby.WarmStandby;
 import com.genesyslab.platform.standby.exceptions.WSException;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import java.util.Collection;
 
+import static Protocols.Logging.logger;
 
 public class CSCFGFolder {
+    public static void main (String [] args) {
 
-    private static final Logger logger = LogManager.getLogger(CSCFGFolder.class);
-
-    public static void main (String [] args) throws ConfigException, InterruptedException {
-        PsdkCustomization.setOption(PsdkCustomization.PsdkOption.PsdkLoggerTraceMessages, null, "true");
-        Log.setLoggerFactory(new Log4JLoggerFactoryImpl());
-        BasicConfigurator.configure();
+        new Logging();
 
         Endpoint endpoint = new Endpoint("192.168.66.188", 2020);
         ConfServerProtocol csp = new ConfServerProtocol(endpoint);
@@ -40,21 +31,35 @@ public class CSCFGFolder {
 
         MessageHandler mh = System.out::println;
             csp.setMessageHandler(mh);
+
         WarmStandby ws = new WarmStandby(csp, endpoint);
         IConfService confService = ConfServiceFactory.createConfService(csp);
+
         MessageHandler mh1 = System.out::println;
+
             confService.setUserMessageHandler(mh1);
         try {
             ws.open();
-        } catch (WSException e) {
+        } catch (WSException | InterruptedException e) {
             logger.error("\n\n--->WSException: ", e);
         }
         CfgApplicationQuery aq = new CfgApplicationQuery(confService);
             aq.setIsServer(CfgFlag.CFGFalse);
 
-        Collection<ICfgObject> list = confService.retrieveMultipleObjects(ICfgObject.class, aq);
-        System.out.println("\n--->\nCollection<ICfgObject> list:\n" + list + "\n<---\n");
+        Collection<ICfgObject> list = null;
+        try {
+            list = confService.retrieveMultipleObjects(ICfgObject.class, aq);
+        } catch (ConfigException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        logger.debug("\n--->\nCollection<ICfgObject> list:\n" + list + "\n<---\n");
+        try {
             ws.close();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         //confService.re
         /*KeyValueCollection filterKey = new KeyValueCollection();
             filterKey.addObject("folder_name", "Transactions");

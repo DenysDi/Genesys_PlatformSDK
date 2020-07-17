@@ -12,14 +12,13 @@ import com.genesyslab.platform.configuration.protocol.types.CfgAppType;
 import com.genesyslab.platform.configuration.protocol.types.CfgScriptType;
 import com.genesyslab.platform.standby.WarmStandby;
 import com.genesyslab.platform.standby.exceptions.WSException;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+
+import static Protocols.Logging.logger;
 
 public class ScriptInsert {
 
-    private static final Logger logger = LogManager.getLogger(ScriptInsert.class);
-
     public static void main (String [] args) throws ConfigException, WSException, InterruptedException {
+
         new Logging();
 
         Endpoint endpoint = new Endpoint("192.168.66.188", 2020);

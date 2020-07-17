@@ -5,9 +5,6 @@ import com.genesyslab.platform.applicationblocks.com.ConfigException;
 import com.genesyslab.platform.applicationblocks.com.IConfService;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgApplication;
 import com.genesyslab.platform.applicationblocks.com.queries.CfgApplicationQuery;
-import com.genesyslab.platform.commons.PsdkCustomization;
-import com.genesyslab.platform.commons.log.Log;
-import com.genesyslab.platform.commons.log.Log4JLoggerFactoryImpl;
 import com.genesyslab.platform.commons.protocol.Endpoint;
 import com.genesyslab.platform.commons.protocol.Message;
 import com.genesyslab.platform.commons.protocol.MessageHandler;
@@ -19,11 +16,11 @@ import com.genesyslab.platform.management.protocol.solutioncontrolserver.events.
 import com.genesyslab.platform.management.protocol.solutioncontrolserver.requests.applications.RequestStartApplication;
 import com.genesyslab.platform.standby.WarmStandby;
 import com.genesyslab.platform.standby.exceptions.WSException;
-import org.apache.log4j.BasicConfigurator;
 
 import static Protocols.Logging.logger;
 
 public class SCSTest {
+
     public static void main (String [] args) throws WSException, InterruptedException, ConfigException, ProtocolException {
 
         new Logging();

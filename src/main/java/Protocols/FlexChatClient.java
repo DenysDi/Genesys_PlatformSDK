@@ -15,6 +15,8 @@ import com.genesyslab.platform.webmedia.protocol.flexchat.requests.RequestRefres
 import java.util.HashMap;
 import java.util.Map;
 
+import static Protocols.Logging.logger;
+
 public class FlexChatClient {
     private static FlexChatProtocol flexChat;
     private static String queue = "MM8.0:MultimediaSDK_Process";
@@ -23,7 +25,9 @@ public class FlexChatClient {
 
     public static void main(String[] args) throws Exception{
 
-        flexChat = new FlexChatProtocol(new Endpoint("DD-WIN12R2-ES", 7002));
+        new Logging();
+
+        flexChat = new FlexChatProtocol(new Endpoint("192.168.66.188", 7002));
 
         try{
 
@@ -39,7 +43,7 @@ public class FlexChatClient {
             // - store userId/secureKey and specify them explicitly in further chat requests.
             flexChat.setAutoRegister(false);
             flexChat.open();
-            System.out.println("Opened! ");
+            logger.info("Opened! ");
 
             //Login to chat, store userId/secureKey obtained in response
             loginChat(nickNameOne);
@@ -83,7 +87,7 @@ public class FlexChatClient {
         else
             throw new RuntimeException("Server didn't respond for login request.");
 
-        System.out.println(nickName + " login: " + RequestResult.Success);
+        logger.info(nickName + " login: " + RequestResult.Success);
         return RequestResult.Success;
     }
 
@@ -107,7 +111,7 @@ public class FlexChatClient {
         else
             ret = RequestResult.Error;
 
-        System.out.println(nickName + " join: " + ret);
+        logger.info(nickName + " join: " + ret);
         return ret;
     }
 
@@ -133,14 +137,14 @@ public class FlexChatClient {
         else
             ret = RequestResult.Error;
 
-        System.out.println(nickName + " write to chat: " + ret);
+        logger.info(nickName + " write to chat: " + ret);
         return ret;
     }
 
     private static RequestResult logoutChat(String nickName) throws Exception {
         ClientContext context = clientMap.get(nickName);
         if(context == null) {
-            System.out.println("Already logout.");
+            logger.info("Already logout.");
             return null;
         }
         RequestLogout logout = RequestLogout.create(context.getUserId(), context.getSecureKey(), context.getPosition());
@@ -157,7 +161,7 @@ public class FlexChatClient {
         else
             throw new RuntimeException("Server didn't respond for login request.");
 
-        System.out.println(nickName + " logout: " + RequestResult.Success);
+        logger.info(nickName + " logout: " + RequestResult.Success);
         return RequestResult.Success;
     }
 

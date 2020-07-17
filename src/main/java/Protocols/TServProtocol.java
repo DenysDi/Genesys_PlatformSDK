@@ -1,10 +1,7 @@
 package Protocols;
 
-import com.genesyslab.platform.commons.PsdkCustomization;
 import com.genesyslab.platform.commons.connection.configuration.ClientADDPOptions;
 import com.genesyslab.platform.commons.connection.configuration.PropertyConfiguration;
-import com.genesyslab.platform.commons.log.Log;
-import com.genesyslab.platform.commons.log.Log4JLoggerFactoryImpl;
 import com.genesyslab.platform.commons.protocol.Endpoint;
 import com.genesyslab.platform.commons.protocol.MessageHandler;
 import com.genesyslab.platform.commons.protocol.ProtocolException;
@@ -14,14 +11,14 @@ import com.genesyslab.platform.standby.exceptions.WSException;
 import com.genesyslab.platform.voice.protocol.TServerProtocol;
 import com.genesyslab.platform.voice.protocol.tserver.requests.agent.RequestAgentLogin;
 import com.genesyslab.platform.voice.protocol.tserver.requests.dn.RequestRegisterAddress;
-import org.apache.log4j.BasicConfigurator;
+
+import static Protocols.Logging.logger;
 
 
 public class TServProtocol {
     public static void main (String [] args) throws ProtocolException, WSException, InterruptedException {
-        PsdkCustomization.setOption(PsdkCustomization.PsdkOption.PsdkLoggerTraceMessages, null, "true");
-        Log.setLoggerFactory(new Log4JLoggerFactoryImpl());
-        BasicConfigurator.configure();
+
+        new Logging();
 
         /*ConnectionSettings cs = new ConnectionSettings();
             cs.setApplicationName("PSDK");
@@ -41,17 +38,17 @@ public class TServProtocol {
 
         TServerProtocol tsp0 = new TServerProtocol();
             tsp0.setClientName						("iWDManager0");
-        MessageHandler mh0 = x -> System.out.println(x);
+        MessageHandler mh0 = x -> logger.info(x);
             tsp0.setMessageHandler(mh0);
 
         TServerProtocol tsp1 = new TServerProtocol();
             tsp1.setClientName						("iWDManager1");
-        MessageHandler mh1 = message -> System.out.println(message);
+        MessageHandler mh1 = message -> logger.info(message);
             tsp1.setMessageHandler(mh1);
 
         TServerProtocol tsp2 = new TServerProtocol();
             tsp2.setClientName						("iWDManager2");
-        MessageHandler mh2 = message -> System.out.println(message);
+        MessageHandler mh2 = message -> logger.info(message);
             tsp2.setMessageHandler(mh2);
 
         RequestAgentLogin Rlogin0 = RequestAgentLogin.create();
@@ -127,12 +124,12 @@ public class TServProtocol {
             ws.setConfig(cfg2);
             ws.open();
             if (ws.isOpened()){
-                System.out.println("\n\n***_ws2 is opened!_***\n\n");
+                logger.info("\n\n***_ws2 is opened!_***\n\n");
                 tsp2.request(RegDn2);
                 tsp2.request(Rlogin2);
-                System.out.println("\n\n***_All requests sent!_***\n\n");
+                logger.info("\n\n***_All requests sent!_***\n\n");
             }else{
-                System.out.println("\n\n***_ws2 is NOT opened!_***\n\n");
+                logger.info("\n\n***_ws2 is NOT opened!_***\n\n");
             }
 
             //ws.close();

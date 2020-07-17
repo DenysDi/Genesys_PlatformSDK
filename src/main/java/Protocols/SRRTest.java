@@ -1,11 +1,8 @@
 package Protocols;
 
-import com.genesyslab.platform.commons.PsdkCustomization;
 import com.genesyslab.platform.commons.collections.KeyValueCollection;
 import com.genesyslab.platform.commons.connection.configuration.ClientADDPOptions;
 import com.genesyslab.platform.commons.connection.configuration.PropertyConfiguration;
-import com.genesyslab.platform.commons.log.Log;
-import com.genesyslab.platform.commons.log.Log4JLoggerFactoryImpl;
 import com.genesyslab.platform.commons.protocol.Endpoint;
 import com.genesyslab.platform.commons.protocol.Message;
 import com.genesyslab.platform.commons.protocol.MessageHandler;
@@ -17,15 +14,15 @@ import com.genesyslab.platform.outbound.protocol.outbounddesktop.ScheduledRecord
 import com.genesyslab.platform.voice.protocol.TServerProtocol;
 import com.genesyslab.platform.voice.protocol.tserver.CommonProperties;
 import com.genesyslab.platform.voice.protocol.tserver.requests.special.RequestDistributeUserEvent;
-import org.apache.log4j.BasicConfigurator;
 
 import java.util.Date;
 
+import static Protocols.Logging.logger;
+
 public class SRRTest {
     public void main (String []args) throws InterruptedException, ProtocolException, OutboundDesktopBinding.KVBindingException {
-        PsdkCustomization.setOption(PsdkCustomization.PsdkOption.PsdkLoggerTraceMessages, null, "true");
-        Log.setLoggerFactory(new Log4JLoggerFactoryImpl());
-        BasicConfigurator.configure();
+
+        new Logging();
 
         PropertyConfiguration tserverConfig = new PropertyConfiguration();
             tserverConfig.setUseAddp(true);
@@ -68,6 +65,6 @@ public class SRRTest {
             tsp0.close();
 
         Message MessageRetrun = tsp0.request(rdue);
-        System.out.println(MessageRetrun);
+        logger.info(MessageRetrun);
     }
 }

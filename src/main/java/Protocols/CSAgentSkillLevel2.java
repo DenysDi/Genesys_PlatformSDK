@@ -10,8 +10,12 @@ import com.genesyslab.platform.configuration.protocol.types.CfgAppType;
 import com.genesyslab.platform.standby.WarmStandby;
 import com.genesyslab.platform.standby.exceptions.WSException;
 
+import static Protocols.Logging.logger;
+
 public class CSAgentSkillLevel2 {
     public static void main (String []args) throws WSException, InterruptedException {
+
+        new Logging();
 
         Endpoint endpoint = new Endpoint("192.168.66.188", 2020);
         ConfServerProtocol csp = new ConfServerProtocol(endpoint);
@@ -43,7 +47,7 @@ public class CSAgentSkillLevel2 {
         //if (resp instanceof EventObjectUpdated) {
             // The object has been updated
         //} else if (resp instanceof EventError) {
-            StartLog.error("Error on object update: "
+        logger.error("Error on object update: "
                     + "CfgUtilities.getErrorCode(((EventError) resp).getErrorCode())"
                     + "tDescription:  + ((EventError) resp).getDescription()");
         //}

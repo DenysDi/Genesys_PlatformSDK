@@ -1,9 +1,6 @@
 package Protocols;
 
-import com.genesyslab.platform.commons.PsdkCustomization;
 import com.genesyslab.platform.commons.collections.KeyValueCollection;
-import com.genesyslab.platform.commons.log.Log;
-import com.genesyslab.platform.commons.log.Log4JLoggerFactoryImpl;
 import com.genesyslab.platform.commons.protocol.Endpoint;
 import com.genesyslab.platform.commons.protocol.Message;
 import com.genesyslab.platform.commons.protocol.MessageHandler;
@@ -11,14 +8,13 @@ import com.genesyslab.platform.commons.protocol.ProtocolException;
 import com.genesyslab.platform.reporting.protocol.StatServerProtocol;
 import com.genesyslab.platform.reporting.protocol.statserver.*;
 import com.genesyslab.platform.reporting.protocol.statserver.requests.RequestOpenStatisticEx;
-import org.apache.log4j.BasicConfigurator;
+
+import static Protocols.Logging.logger;
 
 public class StatServReq {
     public static void main(String []args) throws ProtocolException {
 
-        PsdkCustomization.setOption                     (PsdkCustomization.PsdkOption.PsdkLoggerTraceMessages, null, "true");
-        Log.setLoggerFactory                            (new Log4JLoggerFactoryImpl());
-        BasicConfigurator.configure();
+        new Logging();
 
         StatServerProtocol ssp = new StatServerProtocol(new Endpoint("192.168.66.99",7006));
             ssp.setClientName("PSDKStatTest001");
@@ -26,7 +22,7 @@ public class StatServReq {
         MessageHandler ssMessageHandler = new MessageHandler() {
             @Override
             public void onMessage(Message message) {
-                System.out.println("*****************\n" + "--->Received via MH:\n" + message + "\n<---\n");
+                logger.debug("*****************\n" + "--->Received via MH:\n" + message + "\n<---\n");
             }
         };
         ssp.setMessageHandler(ssMessageHandler);
@@ -77,9 +73,9 @@ public class StatServReq {
             request.setNotification(notification);
             request.setExtensions(extension);
 
-        System.out.println("--->Sending:\n" + request + "\n<---\n");
+        logger.info("--->Sending:\n" + request + "\n<---\n");
         Message response = ssp.request(request);
-        System.out.println("\n*****************\n" + "\n--->\nReceived in response:\n" + response + "\n<---\n");
+        logger.info("\n*****************\n" + "\n--->\nReceived in response:\n" + response + "\n<---\n");
 
         try {
             ssp.close();

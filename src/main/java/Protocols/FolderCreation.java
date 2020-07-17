@@ -6,9 +6,6 @@ import com.genesyslab.platform.applicationblocks.com.IConfService;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgFolder;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgOwnerID;
 import com.genesyslab.platform.applicationblocks.com.queries.CfgFolderQuery;
-import com.genesyslab.platform.commons.PsdkCustomization;
-import com.genesyslab.platform.commons.log.Log;
-import com.genesyslab.platform.commons.log.Log4JLoggerFactoryImpl;
 import com.genesyslab.platform.commons.protocol.Endpoint;
 import com.genesyslab.platform.commons.protocol.MessageHandler;
 import com.genesyslab.platform.commons.protocol.ProtocolException;
@@ -16,14 +13,11 @@ import com.genesyslab.platform.configuration.protocol.ConfServerProtocol;
 import com.genesyslab.platform.configuration.protocol.types.CfgObjectType;
 import com.genesyslab.platform.standby.WarmStandby;
 import com.genesyslab.platform.standby.exceptions.WSException;
-import org.apache.log4j.BasicConfigurator;
 
 public class FolderCreation {
     public static void main (String [] args) throws InterruptedException, ProtocolException, ConfigException, WSException {
 
-        PsdkCustomization.setOption(PsdkCustomization.PsdkOption.PsdkLoggerTraceMessages, null, "true");
-        Log.setLoggerFactory(new Log4JLoggerFactoryImpl());
-        BasicConfigurator.configure();
+        new Logging();
 
         ConfServerProtocol csp = new ConfServerProtocol();
             csp.setUserName("default");

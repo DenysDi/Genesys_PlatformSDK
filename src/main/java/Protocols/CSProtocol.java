@@ -5,16 +5,17 @@ import com.genesyslab.platform.applicationblocks.com.ConfigException;
 import com.genesyslab.platform.applicationblocks.com.IConfService;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgPerson;
 import com.genesyslab.platform.applicationblocks.com.queries.CfgPersonQuery;
-import com.genesyslab.platform.commons.log.Log;
-import com.genesyslab.platform.commons.log.Log4JLoggerFactoryImpl;
 import com.genesyslab.platform.commons.protocol.Endpoint;
 import com.genesyslab.platform.configuration.protocol.ConfServerProtocol;
 import com.genesyslab.platform.standby.WarmStandby;
 import com.genesyslab.platform.standby.exceptions.WSException;
 
+import static Protocols.Logging.logger;
+
 public class CSProtocol {
     public static void main (String [] args) throws ConfigException, WSException, InterruptedException {
-        Log.setLoggerFactory(new Log4JLoggerFactoryImpl());
+
+        new Logging();
 
         ConfServerProtocol confServer = new ConfServerProtocol();
             confServer.setUserName("default");
@@ -31,7 +32,7 @@ public class CSProtocol {
             CFgP.setUserName                    ("default");
         CfgPerson RP = confService.retrieveObject(CFgP);
         String pass = RP.getPassword();
-        System.out.println(pass);
+        logger.info(pass);
         if (pass == null) {
             CfgPersonQuery CFgP1 = new CfgPersonQuery(confService);
                 CFgP1.setUserName                    ("default");
@@ -43,6 +44,6 @@ public class CSProtocol {
             CFgP2.setUserName                    ("default");
         CfgPerson RP2 = confService.retrieveObject(CFgP2);
         String pass1 = RP2.getPassword();
-        System.out.println(pass1);
+        logger.info(pass1);
     }
 }

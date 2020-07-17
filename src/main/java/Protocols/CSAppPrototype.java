@@ -4,23 +4,18 @@ import com.genesyslab.platform.applicationblocks.com.ConfServiceFactory;
 import com.genesyslab.platform.applicationblocks.com.ConfigException;
 import com.genesyslab.platform.applicationblocks.com.IConfService;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgAppPrototype;
-import com.genesyslab.platform.commons.PsdkCustomization;
 import com.genesyslab.platform.commons.collections.KeyValueCollection;
-import com.genesyslab.platform.commons.log.Log;
-import com.genesyslab.platform.commons.log.Log4JLoggerFactoryImpl;
 import com.genesyslab.platform.commons.protocol.Endpoint;
 import com.genesyslab.platform.commons.protocol.MessageHandler;
 import com.genesyslab.platform.commons.protocol.ProtocolException;
 import com.genesyslab.platform.configuration.protocol.ConfServerProtocol;
 import com.genesyslab.platform.configuration.protocol.types.CfgAppType;
 import com.genesyslab.platform.configuration.protocol.types.CfgObjectState;
-import org.apache.log4j.BasicConfigurator;
 
 public class CSAppPrototype {
-    public static void main (String [] args) throws InterruptedException, ProtocolException, ConfigException {
+    public static void main (String [] args) {
 
-        PsdkCustomization.setOption(PsdkCustomization.PsdkOption.PsdkLoggerTraceMessages, null, "true");
-        Log.setLoggerFactory(new Log4JLoggerFactoryImpl());BasicConfigurator.configure();
+        new Logging();
 
         ConfServerProtocol csp = new ConfServerProtocol(new Endpoint("192.168.66.188", 2020));
             csp.setUserName("default");
@@ -32,7 +27,13 @@ public class CSAppPrototype {
 
         IConfService confService = ConfServiceFactory.createConfService(csp);    //	initialization of COM ABlock functionality
 
+        try {
             csp.open();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         KeyValueCollection settings = new KeyValueCollection();
             settings.addObject("allow-duplicated-kvp", "true");
@@ -70,8 +71,18 @@ public class CSAppPrototype {
             appP.setState(CfgObjectState.CFGEnabled);
             appP.setType(CfgAppType.CFGCustomServer);
             appP.setVersion("8.5.3");
+        try {
             appP.save();
+        } catch (ConfigException e) {
+            e.printStackTrace();
+        }
 
+        try {
             csp.close();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

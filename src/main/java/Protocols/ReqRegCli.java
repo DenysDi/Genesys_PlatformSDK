@@ -1,7 +1,10 @@
 package Protocols;
 
 import com.genesyslab.platform.commons.collections.KeyValueCollection;
-import com.genesyslab.platform.commons.protocol.*;
+import com.genesyslab.platform.commons.protocol.Endpoint;
+import com.genesyslab.platform.commons.protocol.Message;
+import com.genesyslab.platform.commons.protocol.ProtocolException;
+import com.genesyslab.platform.commons.protocol.Referenceable;
 import com.genesyslab.platform.openmedia.protocol.InteractionServerProtocol;
 import com.genesyslab.platform.openmedia.protocol.InteractionServerProtocolListener;
 import com.genesyslab.platform.openmedia.protocol.interactionserver.InteractionClient;
@@ -28,7 +31,7 @@ public class ReqRegCli {
 
         final InteractionServerProtocolListener server = new InteractionServerProtocolListener(endpoint);
             server.setClientRequestHandler(requestContext -> {
-                System.out.println("\n\n--->Server Context is: " + requestContext + "<---\n\n");
+                logger.info("\n\n--->Server Context is: " + requestContext + "<---\n\n");
                 Message msg = requestContext.getRequestMessage();
                 Message response = null;
                 Object refId = null;

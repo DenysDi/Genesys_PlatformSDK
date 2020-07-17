@@ -8,22 +8,19 @@ import com.genesyslab.platform.applicationblocks.com.objects.CfgSkill;
 import com.genesyslab.platform.applicationblocks.com.objects.CfgSkillLevel;
 import com.genesyslab.platform.applicationblocks.com.queries.CfgPersonQuery;
 import com.genesyslab.platform.applicationblocks.com.queries.CfgSkillQuery;
-import com.genesyslab.platform.commons.PsdkCustomization;
-import com.genesyslab.platform.commons.log.Log;
-import com.genesyslab.platform.commons.log.Log4JLoggerFactoryImpl;
 import com.genesyslab.platform.commons.protocol.Endpoint;
 import com.genesyslab.platform.commons.protocol.MessageHandler;
 import com.genesyslab.platform.configuration.protocol.ConfServerProtocol;
 import com.genesyslab.platform.configuration.protocol.types.CfgAppType;
 import com.genesyslab.platform.standby.WarmStandby;
 import com.genesyslab.platform.standby.exceptions.WSException;
-import org.apache.log4j.BasicConfigurator;
+
+import static Protocols.Logging.logger;
 
 public class CSAgentSkillLevel {
     public static void main (String [] args) throws ConfigException, WSException, InterruptedException {
-        PsdkCustomization.setOption(PsdkCustomization.PsdkOption.PsdkLoggerTraceMessages, null, "true");
-        Log.setLoggerFactory(new Log4JLoggerFactoryImpl());
-        BasicConfigurator.configure();
+
+        new Logging();
 
         Endpoint endpoint = new Endpoint("192.168.66.188", 2020);
         ConfServerProtocol csp = new ConfServerProtocol(endpoint);
@@ -68,7 +65,7 @@ public class CSAgentSkillLevel {
         CfgPersonQuery cfgPQ2 = new CfgPersonQuery(confService);
             cfgPQ2.setDbid(106);
         CfgPerson cfgP2 = confService.retrieveObject(cfgPQ2);
-        System.out.println("\n--->\nPerson:\n" + cfgP2 + "\n<---\n" );
+        logger.debug("\n--->\nPerson:\n" + cfgP2 + "\n<---\n" );
             ws.close();
     }
 }

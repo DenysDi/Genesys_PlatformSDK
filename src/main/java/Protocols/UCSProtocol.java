@@ -13,8 +13,13 @@ import com.genesyslab.platform.contacts.protocol.contactserver.requests.RequestI
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import static Protocols.Logging.logger;
+
 public class UCSProtocol {
     public static void main(String[] args) throws InterruptedException, ProtocolException, URISyntaxException {
+
+        new Logging();
+
         UniversalContactServerProtocol ucs = new UniversalContactServerProtocol(new Endpoint(new URI("tcp://DD-WIN12R2-ES:7009")));
             ucs.setClientName               ("PSDK");
             ucs.open();
@@ -64,7 +69,7 @@ public class UCSProtocol {
             //ucs.send                            (rdel);
         Message resp = ucs.request    (RILG);
         //Message resp1 = ucs.request         (rdel);
-        System.out.println            ("1st resp \n" + resp);
+        logger.info            ("1st resp \n" + resp);
         //System.out.println                  (resp1);
 
         java.lang.Thread.sleep(1000);
@@ -75,7 +80,7 @@ public class UCSProtocol {
             ucs.send(nextPage1);
 
         Message resp1 = ucs.request    (nextPage1);
-        System.out.println            ("2nd resp \n" + resp1);
+        logger.info            ("2nd resp \n" + resp1);
 
 
 
@@ -83,7 +88,7 @@ public class UCSProtocol {
         ucs.send(nextPage1);
 
         Message resp2 = ucs.request    (nextPage1);
-        System.out.println            ("3rd resp \n" + resp2);
+        logger.info            ("3rd resp \n" + resp2);
 
         /*RequestInteractionListGetNextPage nextPage2 = new RequestInteractionListGetNextPage();
             nextPage2.setReferenceId(322223);

@@ -1,8 +1,5 @@
 package Protocols;
 
-import com.genesyslab.platform.commons.PsdkCustomization;
-import com.genesyslab.platform.commons.log.Log;
-import com.genesyslab.platform.commons.log.Log4JLoggerFactoryImpl;
 import com.genesyslab.platform.commons.protocol.Endpoint;
 import com.genesyslab.platform.commons.protocol.Message;
 import com.genesyslab.platform.openmedia.protocol.InteractionServerProtocol;
@@ -17,6 +14,8 @@ import com.genesyslab.platform.openmedia.protocol.interactionserver.requests.int
 
 import java.net.URI;
 
+import static Protocols.Logging.logger;
+
 /**************************************************************************************************
  * Developed by Denys Diachenko, denys.diachenko@genesys.com                                      *
  * This file is part of FSinPSDK.                                                                 *
@@ -29,8 +28,8 @@ import java.net.URI;
 
 public class IXNServer {
     public static void main (String [] args) throws Exception {
-        PsdkCustomization.setOption(PsdkCustomization.PsdkOption.PsdkLoggerTraceMessages, null, "true");
-        Log.setLoggerFactory(new Log4JLoggerFactoryImpl());
+
+        new Logging();
 
         int count = 1;
 
@@ -59,15 +58,15 @@ public class IXNServer {
 
         Message rep = ixn.request(RTS);
 
-        System.out.println("Request Take Snapshot - " + rep);
+        logger.info("Request Take Snapshot - " + rep);
 
         EventSnapshotTaken EST = (EventSnapshotTaken) rep;
 
-        System.out.println("Event Snapshot Taken - " + EST);
+        logger.info("Event Snapshot Taken - " + EST);
 
         Integer a = EST.getNumberOfInteractions();
 
-        System.out.println("Number Of Interactions - " + a);
+        logger.info("Number Of Interactions - " + a);
 
         while (a>=count) {
             RequestGetSnapshotInteractions RGSI = RequestGetSnapshotInteractions.create();
@@ -79,12 +78,12 @@ public class IXNServer {
 
             Message repl = ixn.request(RGSI);
 
-            System.out.println("Request Get Snapshot Interactions - " + repl);
+            logger.info("Request Get Snapshot Interactions - " + repl);
 
             EventSnapshotInteractions ESI = (EventSnapshotInteractions) repl;
 
-            System.out.println("Event Snapshot Interactions - " + ESI);
-            System.out.println("Count - " + count);
+            logger.info("Event Snapshot Interactions - " + ESI);
+            logger.info("Count - " + count);
 
             count++;
         }
