@@ -20,7 +20,7 @@ import java.util.Date;
 import static Protocols.Logging.logger;
 
 public class SRRTest {
-    public void main (String []args) throws InterruptedException, ProtocolException, OutboundDesktopBinding.KVBindingException {
+    public void main (String []args) {
 
         new Logging();
 
@@ -40,7 +40,13 @@ public class SRRTest {
             tsp0.setEndpoint(endpoint);
         MessageHandler mh0 = System.out::println;
             tsp0.setMessageHandler(mh0);
+        try {
             tsp0.open();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         ScheduledRecordReschedule srr = new ScheduledRecordReschedule();
             srr.setApplicationId(322223);
@@ -49,7 +55,12 @@ public class SRRTest {
             srr.setDateTime(new Date());
             srr.setRecordHandle(32222355);
 
-        KeyValueCollection kvc = OutboundDesktopBinding.marshal(srr);
+        KeyValueCollection kvc = null;
+        try {
+            kvc = OutboundDesktopBinding.marshal(srr);
+        } catch (OutboundDesktopBinding.KVBindingException e) {
+            e.printStackTrace();
+        }
 
         CommonProperties cp = CommonProperties.create();
             cp.setUserData(kvc);
@@ -59,10 +70,13 @@ public class SRRTest {
             rdue.setUserEvent(cp);
             rdue.setCommunicationDN("9001");
 
+        try {
             tsp0.request(rdue);
             tsp0.close();
-
-        Message MessageRetrun = tsp0.request(rdue);
-        logger.info(MessageRetrun);
+            Message MessageRetrun = tsp0.request(rdue);
+            logger.info(MessageRetrun);
+        } catch (ProtocolException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
