@@ -31,7 +31,6 @@ public class SRRTest {
             tserverConfig.setAddpTraceMode(ClientADDPOptions.AddpTraceMode.Both);
 
         Endpoint endpoint = new Endpoint("192.168.66.188", 7015);
-
         Endpoint endpoint1 = new Endpoint("192.168.66.188", 7015);
 
         OutboundServerProtocol outboundServerProtocol = new OutboundServerProtocol(endpoint1);
@@ -41,7 +40,6 @@ public class SRRTest {
             tsp0.setEndpoint(endpoint);
         MessageHandler mh0 = System.out::println;
             tsp0.setMessageHandler(mh0);
-
             tsp0.open();
 
         ScheduledRecordReschedule srr = new ScheduledRecordReschedule();

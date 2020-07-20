@@ -16,7 +16,7 @@ import com.genesyslab.platform.voice.protocol.tserver.requests.special.RequestDi
 import java.util.Date;
 
 public class SRR {
-    public static void main (String []args) throws InterruptedException, ProtocolException, OutboundDesktopBinding.KVBindingException {
+    public static void main (String []args) {
 
         new Logging();
 
@@ -34,7 +34,13 @@ public class SRR {
         MessageHandler mh0 = System.out::println;
             tsp0.setMessageHandler(mh0);
 
-        tsp0.open();
+        try {
+            tsp0.open();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         ScheduledRecordReschedule srr = new ScheduledRecordReschedule();
             srr.setApplicationId(322223);
@@ -43,7 +49,12 @@ public class SRR {
             srr.setDateTime(new Date());
             srr.setRecordHandle(32222355);
 
-        KeyValueCollection kvc = OutboundDesktopBinding.marshal(srr);
+        KeyValueCollection kvc = null;
+        try {
+            kvc = OutboundDesktopBinding.marshal(srr);
+        } catch (OutboundDesktopBinding.KVBindingException e) {
+            e.printStackTrace();
+        }
 
         CommonProperties cp = CommonProperties.create();
             cp.setUserData(kvc);
@@ -53,7 +64,12 @@ public class SRR {
             rdue.setUserEvent(cp);
             rdue.setCommunicationDN("9001");
 
+        try {
             tsp0.request(rdue);
+            tsp0.close();
+        } catch (ProtocolException | InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 }

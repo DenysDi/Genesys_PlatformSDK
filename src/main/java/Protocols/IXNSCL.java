@@ -10,7 +10,7 @@ import com.genesyslab.platform.openmedia.protocol.interactionserver.requests.age
 import static Protocols.Logging.logger;
 
 public class IXNSCL {
-    public static void main(final String[] args) throws ProtocolException, IllegalStateException, InterruptedException {
+    public static void main(final String[] args) {
         new Logging();
         final int PORT = 11111;
         final InteractionServerProtocolListener server = new InteractionServerProtocolListener(new WildcardEndpoint(PORT));
@@ -44,25 +44,34 @@ public class IXNSCL {
                 }
             }
         });
-        server.open();
-
         InteractionServerProtocol client = new InteractionServerProtocol(new Endpoint("iWDManager","DD-WIN12R2-ES", 7004));
+        try {
+            server.open();
             client.open();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
+        int prxid = 5;
         // create "some request":
         RequestAgentLogin ral = RequestAgentLogin.create();
             ral.setAgentId("wdeadmin");
             ral.setReason(null);
             ral.setTenantId(101);
-        int prxid = 5;
             ral.setProxyClientId(prxid);
             ral.setPlaceId("wdeadmin");
         //ixn.request(ral);
-        Message response = client.request(ral);
-
-        // ...
-
-        client.close();
-        server.close();
+        try {
+            Message response = client.request(ral);
+            logger.info(response);
+            client.close();
+            server.close();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+        e.printStackTrace();
+        }
     }
 }

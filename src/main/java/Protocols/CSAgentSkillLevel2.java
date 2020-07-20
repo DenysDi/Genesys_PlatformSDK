@@ -13,7 +13,7 @@ import com.genesyslab.platform.standby.exceptions.WSException;
 import static Protocols.Logging.logger;
 
 public class CSAgentSkillLevel2 {
-    public static void main (String []args) throws WSException, InterruptedException {
+    public static void main (String []args) {
 
         new Logging();
 
@@ -30,7 +30,13 @@ public class CSAgentSkillLevel2 {
         IConfService confService = ConfServiceFactory.createConfService(csp);
 
         WarmStandby ws = new WarmStandby(csp, endpoint);
+        try {
             ws.open();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (WSException e) {
+            e.printStackTrace();
+        }
 
         //ConfObjectDelta agentDelta = new ConfObjectDelta(metadata, CfgObjectType.CFGPerson);
 
@@ -51,5 +57,10 @@ public class CSAgentSkillLevel2 {
                     + "CfgUtilities.getErrorCode(((EventError) resp).getErrorCode())"
                     + "tDescription:  + ((EventError) resp).getDescription()");
         //}
+        try{
+            ws.close();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

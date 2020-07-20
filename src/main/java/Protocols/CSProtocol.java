@@ -37,8 +37,8 @@ public class CSProtocol {
             CfgPersonQuery CFgP1 = new CfgPersonQuery(confService);
                 CFgP1.setUserName                    ("default");
             CfgPerson RP1 = confService.retrieveObject(CFgP1);
-            RP1.setPassword("password");
-            RP1.save();
+                RP1.setPassword("password");
+                RP1.save();
         }
         CfgPersonQuery CFgP2 = new CfgPersonQuery(confService);
             CFgP2.setUserName                    ("default");

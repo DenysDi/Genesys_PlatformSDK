@@ -18,7 +18,7 @@ import com.genesyslab.platform.standby.exceptions.WSException;
 import static Protocols.Logging.logger;
 
 public class CSAgentSkillLevel {
-    public static void main (String [] args) throws ConfigException, WSException, InterruptedException {
+    public static void main (String [] args) {
 
         new Logging();
 
@@ -33,7 +33,13 @@ public class CSAgentSkillLevel {
             csp.setMessageHandler(mh);
         WarmStandby ws = new WarmStandby(csp, endpoint);
         IConfService confService = ConfServiceFactory.createConfService(csp);
+        try {
             ws.open();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (WSException e) {
+            e.printStackTrace();
+        }
 
         CfgPersonQuery cfgPQ = new CfgPersonQuery(confService);
             cfgPQ.setDbid(106);
@@ -46,16 +52,26 @@ public class CSAgentSkillLevel {
         CfgPersonQuery cfgPersonQuery = new CfgPersonQuery(confService);
             cfgPersonQuery.setDbid(106);
         //get person
-        CfgPerson cfgPerson = cfgPersonQuery.executeSingleResult();
+        CfgPerson cfgPerson = null;
+        CfgSkill cfgSkill = null;
+        try {
+            cfgPerson = cfgPersonQuery.executeSingleResult();
+            cfgSkill = cfgSkillQuery.executeSingleResult();
+        } catch (ConfigException e) {
+            e.printStackTrace();
+        }
         //get skill
-        CfgSkill cfgSkill = cfgSkillQuery.executeSingleResult();
 
         CfgSkillLevel cfgSkillLevel = new CfgSkillLevel(confService, cfgPerson);
             cfgSkillLevel.setSkill(cfgSkill);
             cfgSkillLevel.setSkillDBID(cfgSkill.getDBID());
             cfgSkillLevel.setLevel(0);
             cfgPerson.getAgentInfo().getSkillLevels().add(cfgSkillLevel);
+        try {
             cfgPerson.save();
+        } catch (ConfigException e) {
+            e.printStackTrace();
+        }
 
         CfgPersonQuery cfgPQ1 = new CfgPersonQuery(confService);
             cfgPQ1.setDbid(106);
@@ -64,8 +80,17 @@ public class CSAgentSkillLevel {
 
         CfgPersonQuery cfgPQ2 = new CfgPersonQuery(confService);
             cfgPQ2.setDbid(106);
-        CfgPerson cfgP2 = confService.retrieveObject(cfgPQ2);
+        CfgPerson cfgP2 = null;
+        try {
+            cfgP2 = confService.retrieveObject(cfgPQ2);
+        } catch (ConfigException e) {
+            e.printStackTrace();
+        }
         logger.debug("\n--->\nPerson:\n" + cfgP2 + "\n<---\n" );
+        try {
             ws.close();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
