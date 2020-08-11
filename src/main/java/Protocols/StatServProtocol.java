@@ -24,7 +24,7 @@ public class StatServProtocol {
             RequestGetStatisticEx request = RequestGetStatisticEx.create();
             StatisticObject object = StatisticObject.create();
                 object.setObjectId("Place1001");
-                object.setObjectType(StatisticObjectType.AgentPlace);
+                object.setObjectType(StatisticObjectType.RegularDN);
                 object.setTenantName("Environment");
                 object.setTenantPassword("");
 

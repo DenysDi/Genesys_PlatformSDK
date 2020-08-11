@@ -25,14 +25,12 @@ public class StatServReq {
                 logger.debug("*****************\n" + "--->Received via MH:\n" + message + "\n<---\n");
             }
         };
-        ssp.setMessageHandler(ssMessageHandler);
+            ssp.setMessageHandler(ssMessageHandler);
 
         try {
             ssp.open();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ProtocolException e) {
-            e.printStackTrace();
+        } catch (InterruptedException|ProtocolException e) {
+            logger.error(e);
         }
 
         StatisticObject object = StatisticObject.create();
@@ -63,7 +61,7 @@ public class StatServReq {
             metricEx.setSubject(StatisticSubject.DNStatus);
             metricEx.setCategory(StatisticCategory.TotalAdjustedTime);
 
-            KeyValueCollection extension = new KeyValueCollection();
+        KeyValueCollection extension = new KeyValueCollection();
             extension.addObject("MediaType", "chat");
 
         RequestOpenStatisticEx request = RequestOpenStatisticEx.create();
@@ -73,14 +71,14 @@ public class StatServReq {
             request.setNotification(notification);
             request.setExtensions(extension);
 
-        logger.info("--->Sending:\n" + request + "\n<---\n");
+            logger.info("--->Sending:\n" + request + "\n<---\n");
         Message response = ssp.request(request);
-        logger.info("\n*****************\n" + "\n--->\nReceived in response:\n" + response + "\n<---\n");
+            logger.info("\n*****************\n" + "\n--->\nReceived in response:\n" + response + "\n<---\n");
 
         try {
             ssp.close();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
     }
 }
