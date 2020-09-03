@@ -116,7 +116,7 @@ public class TServProtocol {
             }
 
         WSConfig  cfg2 = new WSConfig()
-                .setEndpoints(new Endpoint("DD-WIN12R2-FR", 7014), new Endpoint("DD-WIN12R2-FR", 7014))
+                .setEndpoints(new Endpoint("DD-WIN12R2-FR", 7014), new Endpoint("192.168.66.188", 7014))
                 .setBackupDelay(2000)
                 .setReconnectionRandomDelayRange(5000)
                 .setRetryDelay(100, 500, 5000)

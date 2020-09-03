@@ -50,7 +50,7 @@ public class UCSClient {
                 logger.info("\n--->\nStart testing\nconnection is not opened\n" + dateFormat.format(date2) + "\n<---\n");
             }
         } catch (InterruptedException | WSException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
     }
 }

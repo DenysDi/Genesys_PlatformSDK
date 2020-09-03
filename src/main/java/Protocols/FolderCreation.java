@@ -41,7 +41,7 @@ public class FolderCreation {
         Integer folderId = null; //get parent folder
 
         CfgFolderQuery cfgFolderQueryParent = new CfgFolderQuery(confService);
-            cfgFolderQueryParent.setName("TestFolder1");
+            cfgFolderQueryParent.setName("TestFolder1");//parent folder query
 
         CfgFolder cfgFolderParent = cfgFolderQueryParent.executeSingleResult();
             folderId = cfgFolderParent.getObjectDbid();
@@ -49,7 +49,7 @@ public class FolderCreation {
             ownerId.setDBID(cfgFolderParent.getOwnerID().getDBID());
             ownerId.setType(cfgFolderParent.getOwnerID().getType());
 
-        CfgFolder folder = new CfgFolder(confService);
+        CfgFolder folder = new CfgFolder(confService);//new folder creation
             folder.setName("TestFolder2");
             folder.setFolderId(folderId);
             folder.setOwnerID(ownerId);
