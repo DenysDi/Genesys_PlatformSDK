@@ -22,6 +22,12 @@ import java.util.Collection;
 import static Protocols.Logging.logger;
 
 public class CFGHost_change {
+
+    private boolean verify (String num) {
+        return num.matches("[0]{1}-[0-9]{2}-[0-9]{7}");
+    }
+
+
     public static void main (String []args) {
 
         new Logging();

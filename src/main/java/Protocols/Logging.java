@@ -11,7 +11,7 @@ public class Logging {
 
     public static final Logger logger = LogManager.getLogger(Logging.class);
 
-    public void main (String [] args) {
+    public Logging() {
         PsdkCustomization.setOption(PsdkCustomization.PsdkOption.PsdkLoggerTraceMessages, null, "true");
         Log.setLoggerFactory(new Log4JLoggerFactoryImpl());
         BasicConfigurator.configure();
