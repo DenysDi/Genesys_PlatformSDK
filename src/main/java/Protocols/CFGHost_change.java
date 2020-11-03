@@ -23,10 +23,9 @@ import static Protocols.Logging.logger;
 
 public class CFGHost_change {
 
-    private boolean verify (String num) {
-        return num.matches("[0]{1}-[0-9]{2}-[0-9]{7}");
+    public boolean verify (String num) {
+        return num.matches("[0]-[0-9]{2}-[0-9]{7}");
     }
-
 
     public static void main (String []args) {
 
@@ -35,8 +34,9 @@ public class CFGHost_change {
             logger.info("Initializing Genesys Environment for " + environmentName);
         WarmStandby ws = null;
         try {
-            Endpoint endpoint = new Endpoint("192.168.66.188", 2020);
-            ConfServerProtocol csp = new ConfServerProtocol(endpoint);
+            Endpoint endpoint0 = new Endpoint("192.168.66.188", 2020);
+            Endpoint endpoint1 = new Endpoint("192.168.66.156", 2020);
+            ConfServerProtocol csp = new ConfServerProtocol();
                 csp.setUserName("default");
                 csp.setUserPassword("password");
                 csp.setClientName("default");
@@ -44,7 +44,7 @@ public class CFGHost_change {
 
             MessageHandler mh = System.out::println;
                 csp.setMessageHandler(mh);
-            ws = new WarmStandby(csp, endpoint);
+            ws = new WarmStandby(csp, endpoint0, endpoint1);
             IConfService confService = ConfServiceFactory.createConfService(csp);
                 confService.setUserMessageHandler(mh);
             NotificationQuery nq = new NotificationQuery();

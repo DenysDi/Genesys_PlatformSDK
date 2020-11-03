@@ -1,21 +1,45 @@
 package Protocols;
 
+import com.genesyslab.platform.applicationblocks.com.ConfServiceFactory;
+import com.genesyslab.platform.applicationblocks.com.ConfigException;
+import com.genesyslab.platform.applicationblocks.com.IConfService;
+import com.genesyslab.platform.applicationblocks.com.NotificationQuery;
 import com.genesyslab.platform.commons.protocol.Endpoint;
+import com.genesyslab.platform.commons.protocol.MessageHandler;
 import com.genesyslab.platform.configuration.protocol.ConfServerProtocol;
 import com.genesyslab.platform.configuration.protocol.types.CfgAppType;
+import com.genesyslab.platform.standby.WarmStandby;
+import com.genesyslab.platform.standby.exceptions.WSException;
+
+import static Protocols.Logging.logger;
 
 public class CSComp {
 
     public static void main (String [] args) {
 
         new Logging();
-
-        Endpoint endpoint = new Endpoint("192.168.66.188", 2020);
-        ConfServerProtocol csp = new ConfServerProtocol(endpoint);
+        Endpoint endpoint0 = new Endpoint("192.168.66.188", 2020);
+        Endpoint endpoint1 = new Endpoint("192.168.66.156", 2020);
+        ConfServerProtocol csp = new ConfServerProtocol();
             csp.setUserName("default");
             csp.setUserPassword("password");
             csp.setClientName("default");
             csp.setClientApplicationType(CfgAppType.CFGSCE.asInteger());
+        MessageHandler mh = logger::debug;
+        //System.out::println;
+            csp.setMessageHandler(mh);
+        WarmStandby ws = new WarmStandby(csp, endpoint0, endpoint1);
+            ws.autoRestore();
+        IConfService confService = ConfServiceFactory.createConfService(csp);
+            confService.setUserMessageHandler(mh);
+        NotificationQuery nq = new NotificationQuery();
+            nq.setTenantDbid(1);
+        try {
+            ws.open();
+            confService.subscribe(nq);
+        } catch (InterruptedException | WSException | ConfigException e) {
+            logger.error(e);
+        }
 
         //WarmStandby ws = new WarmStandby(csp, endpoint);
         /*IConfService confService = ConfServiceFactory.createConfService(csp);    //	initialization of COM ABlock functionality
