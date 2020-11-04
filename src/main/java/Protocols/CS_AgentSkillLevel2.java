@@ -1,7 +1,5 @@
 package Protocols;
 
-import com.genesyslab.platform.applicationblocks.com.ConfServiceFactory;
-import com.genesyslab.platform.applicationblocks.com.IConfService;
 import com.genesyslab.platform.commons.protocol.Endpoint;
 import com.genesyslab.platform.commons.protocol.MessageHandler;
 import com.genesyslab.platform.configuration.protocol.ConfServerProtocol;
@@ -24,7 +22,7 @@ public class CS_AgentSkillLevel2 {
         MessageHandler mh = message -> System.out.println("\n--->Received via mh:\n" + message + "\nEnd of message\n<---");
             csp.setMessageHandler(mh);
 
-        IConfService confService = ConfServiceFactory.createConfService(csp);
+        //IConfService confService = ConfServiceFactory.createConfService(csp);
 
         WarmStandby ws = new WarmStandby(csp, endpoint);
         try {
