@@ -16,7 +16,7 @@ import static com.genesyslab.platform.outbound.protocol.outbounddesktop.Callback
 
 public class Outbound {
 
-    public static void main(String[] args) throws InterruptedException, ProtocolException, ClassNotFoundException {
+    public static void main(String[] args) throws InterruptedException, ProtocolException {
 
         new Logging();
 

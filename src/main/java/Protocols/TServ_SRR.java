@@ -4,7 +4,6 @@ import com.genesyslab.platform.commons.collections.KeyValueCollection;
 import com.genesyslab.platform.commons.connection.configuration.ClientADDPOptions;
 import com.genesyslab.platform.commons.connection.configuration.PropertyConfiguration;
 import com.genesyslab.platform.commons.protocol.Endpoint;
-import com.genesyslab.platform.commons.protocol.Message;
 import com.genesyslab.platform.commons.protocol.MessageHandler;
 import com.genesyslab.platform.commons.protocol.ProtocolException;
 import com.genesyslab.platform.outbound.protocol.outbounddesktop.CallbackType;
@@ -16,9 +15,7 @@ import com.genesyslab.platform.voice.protocol.tserver.requests.special.RequestDi
 
 import java.util.Date;
 
-import static Protocols.Logging.logger;
-
-public class SRRTest {
+public class TServ_SRR {
     public static void main (String []args) {
 
         new Logging();
@@ -30,18 +27,18 @@ public class SRRTest {
             tserverConfig.setAddpTraceMode(ClientADDPOptions.AddpTraceMode.Both);
 
         Endpoint endpoint = new Endpoint("192.168.66.188", 7015);
-        //Endpoint endpoint1 = new Endpoint("192.168.66.188", 7015);
-
-        //OutboundServerProtocol outboundServerProtocol = new OutboundServerProtocol(endpoint1);
 
         TServerProtocol tsp0 = new TServerProtocol();
             tsp0.setClientName("iWDManager");
             tsp0.setEndpoint(endpoint);
         MessageHandler mh0 = System.out::println;
             tsp0.setMessageHandler(mh0);
+
         try {
             tsp0.open();
-        } catch (ProtocolException | InterruptedException e) {
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
@@ -70,10 +67,9 @@ public class SRRTest {
         try {
             tsp0.request(rdue);
             tsp0.close();
-            Message MessageRetrun = tsp0.request(rdue);
-            logger.info(MessageRetrun);
         } catch (ProtocolException | InterruptedException e) {
             e.printStackTrace();
         }
+
     }
 }
