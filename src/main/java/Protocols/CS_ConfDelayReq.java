@@ -47,17 +47,17 @@ public class CS_ConfDelayReq {
             csp.addChannelListener(new ChannelListener() {
                 @Override
                 public void onChannelOpened(EventObject eventObject) {
-                    logger.info("\n---> Channel Opened!!! <---\n");
+                    logger.info("\n--->\n!!!Channel Opened!!!\n<---\n");
                 }
 
                 @Override
                 public void onChannelClosed(ChannelClosedEvent channelClosedEvent) {
-                    logger.info("\n---> Channel Closed!!! <---\n");
+                    logger.info("\n--->\n!!!Channel Closed!!!\n" + channelClosedEvent + "\n<---\n");
                 }
 
                 @Override
                 public void onChannelError(ChannelErrorEvent channelErrorEvent) {
-                    logger.error("\n---> Channel Error!!!\n" + channelErrorEvent + "\n<---\n");
+                    logger.error("\n--->\n!!!Channel Error!!!\n" + channelErrorEvent + "\n<---\n");
                 }
             });
 
@@ -83,7 +83,7 @@ public class CS_ConfDelayReq {
 
         try {
             logger.info("\n--->\nThread.sleep started!!!\n<---\n");
-            Thread.sleep(3000000);
+            Thread.sleep(30000000);
         } catch (InterruptedException e) {
             logger.error(e.getMessage());
         }
